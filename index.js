@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 
 // require('dotenv').config()
 
@@ -51,8 +51,8 @@ app.post('/users', async (req, res) => {
       return res.status(400).json({ error: 'User with this email already exists' });
     }
 
-    const hashed = await bcrypt.hash(password, 10);
-    const user = new User({ name, email, password: hashed });
+    // const hashed = await bcrypt.hash(password, 10);
+    const user = new User({ name, email, password });
     await user.save();
 
     res.status(201).json({ message: 'User created', user: { _id: user._id, name, email } });
