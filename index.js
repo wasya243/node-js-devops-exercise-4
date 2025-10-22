@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 // require('dotenv').config()
 
@@ -32,6 +33,29 @@ app.get('/users', async (req, res) => {
   try {
     const users = await User.find({}, '-password');
     res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/users', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ error: 'All fields are required' });
+    }
+
+    const existing = await User.findOne({ email });
+    if (existing) {
+      return res.status(400).json({ error: 'User with this email already exists' });
+    }
+
+    const hashed = await bcrypt.hash(password, 10);
+    const user = new User({ name, email, password: hashed });
+    await user.save();
+
+    res.status(201).json({ message: 'User created', user: { _id: user._id, name, email } });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
