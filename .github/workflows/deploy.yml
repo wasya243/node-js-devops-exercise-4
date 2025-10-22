@@ -1,0 +1,52 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            if [ -d ~/node-js-devops-exercise-3 ]; then
+              cd ~/node-js-devops-exercise-3
+              echo "Updating code..."
+              git pull origin main
+              echo "Updated code"
+            else
+            echo "Pulling repo..."
+              git clone https://github.com/wasya243/node-js-devops-exercise-3.git
+              echo "Pulled repo"
+              cd ~/node-js-devops-exercise-3
+            fi
+
+            echo "Installing deps..."
+            yarn
+            echo "Installed deps"
+
+            pm2 describe hello-server > /dev/null
+            if [ $? -eq 0 ]; then
+              echo "Restarting existing PM2 process..."
+              export MONGO_URI="${{ secrets.MONGO_URI }}"
+              export PORT="${{ secrets.PORT }}"
+              pm2 restart hello-server --update-env
+              echo "Restarted process"
+            else
+              echo "Starting new PM2 process..."
+              export MONGO_URI="${{ secrets.MONGO_URI }}"
+              export PORT="${{ secrets.PORT }}"
+              pm2 start index.js --name hello-server --update-env
+              echo "Started process"
+            fi
