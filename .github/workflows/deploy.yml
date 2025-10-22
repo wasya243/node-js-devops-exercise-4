@@ -38,15 +38,15 @@ jobs:
 
             pm2 describe hello-server > /dev/null
             if [ $? -eq 0 ]; then
-              echo "Restarting existing PM2 process..."
+              echo "Restarting existing PM2 cluster..."
               export MONGO_URI="${{ secrets.MONGO_URI }}"
               export PORT="${{ secrets.PORT }}"
               pm2 restart hello-server --update-env
-              echo "Restarted process"
+              echo "Restarted PM2 cluster"
             else
-              echo "Starting new PM2 process..."
+              echo "Starting new PM2 cluster with 2 instances..."
               export MONGO_URI="${{ secrets.MONGO_URI }}"
               export PORT="${{ secrets.PORT }}"
-              pm2 start index.js --name hello-server --update-env
-              echo "Started process"
+              pm2 start index.js -i 2 --name hello-server --update-env
+              echo "Started PM2 cluster"
             fi
