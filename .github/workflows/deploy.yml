@@ -20,16 +20,16 @@ jobs:
           username: ec2-user
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            if [ -d ~/node-js-devops-exercise-3 ]; then
-              cd ~/node-js-devops-exercise-3
+            if [ -d ~/node-js-devops-exercise-4 ]; then
+              cd ~/node-js-devops-exercise-4
               echo "Updating code..."
               git pull origin main
               echo "Updated code"
             else
             echo "Pulling repo..."
-              git clone https://github.com/wasya243/node-js-devops-exercise-3.git
+              git clone https://github.com/wasya243/node-js-devops-exercise-4.git
               echo "Pulled repo"
-              cd ~/node-js-devops-exercise-3
+              cd ~/node-js-devops-exercise-4
             fi
 
             echo "Installing deps..."

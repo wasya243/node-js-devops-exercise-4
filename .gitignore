@@ -31,3 +31,5 @@ Thumbs.db # Windows specific
 # Operating system files
 *.swp
 *.bak
+
+client-script/
