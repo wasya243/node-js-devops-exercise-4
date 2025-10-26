@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const pinoHttp = require('pino-http');
-const { v4 } = require('uuid');
+const { randomUUID } = require('crypto');
 require('dotenv').config();
 // const bcrypt = require('bcrypt');
 
@@ -34,7 +34,7 @@ app.use(express.json());
 app.use(
   pinoHttp({
     logger,
-    genReqId: (req) => req.headers['x-request-id'] || v4()
+    genReqId: (req) => req.headers['x-request-id'] || randomUUID()
   })
 );
 
