@@ -41,12 +41,22 @@ jobs:
               echo "Restarting existing PM2 cluster..."
               export MONGO_URI="${{ secrets.MONGO_URI }}"
               export PORT="${{ secrets.PORT }}"
+              export NODE_ENV="${{ secrets.NODE_ENV }}"
+              export LOKI_URL="${{ secrets.LOKI_URL }}"
+              export LOKI_USER="${{ secrets.LOKI_USER }}"
+              export LOKI_PASS="${{ secrets.LOKI_PASS }}"
+              export LOG_LEVEL="${{ secrets.LOG_LEVEL }}"
               pm2 restart hello-server --update-env
               echo "Restarted PM2 cluster"
             else
               echo "Starting new PM2 cluster with 2 instances..."
               export MONGO_URI="${{ secrets.MONGO_URI }}"
               export PORT="${{ secrets.PORT }}"
+              export NODE_ENV="${{ secrets.NODE_ENV }}"
+              export LOKI_URL="${{ secrets.LOKI_URL }}"
+              export LOKI_USER="${{ secrets.LOKI_USER }}"
+              export LOKI_PASS="${{ secrets.LOKI_PASS }}"
+              export LOG_LEVEL="${{ secrets.LOG_LEVEL }}"
               pm2 start index.js -i 2 --name hello-server --update-env
               echo "Started PM2 cluster"
             fi
