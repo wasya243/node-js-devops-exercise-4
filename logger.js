@@ -9,6 +9,11 @@ const sharedConfig = Object.freeze({
     paths: ['req.headers.authorization'],
     censor: '[REDACTED]'
   },
+  base: {
+    service_name: process.env.SERVICE_NAME || 'user-api',
+    process_pid: process.pid,
+    env: process.env.NODE_ENV || 'local',
+  }
 });
 
 if (notProd) {

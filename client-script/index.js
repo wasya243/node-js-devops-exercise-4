@@ -42,4 +42,4 @@ async function randomQuery() {
 }
 
 // Run every 1 second
-setInterval(randomQuery, 300);
+setInterval(randomQuery, 10000);
