@@ -2,6 +2,7 @@ const pino = require('pino');
 
 const notProd = process.env.NODE_ENV !== 'local';
 const serviceName = process.env.SERVICE_NAME || 'user-api';
+const env = process.env.NODE_ENV || 'local';
 
 let logger;
 const sharedConfig = Object.freeze({
@@ -13,7 +14,7 @@ const sharedConfig = Object.freeze({
   base: {
     service_name: serviceName,
     process_pid: process.pid,
-    env: process.env.NODE_ENV || 'local',
+    env,
   },
 });
 
