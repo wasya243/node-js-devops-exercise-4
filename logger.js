@@ -31,6 +31,9 @@ if (notProd) {
        password: process.env.LOKI_PASS,
       },
       // only present for pino transport
+      // so that I could filter by service_name, service_name is not undefined
+      // filter by env as well
+      // these values will not be present in logs, but available for labels filter
       labels: {
         service_name: serviceName,
         env,
