@@ -1,6 +1,7 @@
 const pino = require('pino');
 
 const notProd = process.env.NODE_ENV !== 'local';
+const serviceName = process.env.SERVICE_NAME || 'user-api';
 
 let logger;
 const sharedConfig = Object.freeze({
@@ -10,10 +11,10 @@ const sharedConfig = Object.freeze({
     censor: '[REDACTED]'
   },
   base: {
-    service_name: process.env.SERVICE_NAME || 'user-api',
+    service_name: serviceName,
     process_pid: process.pid,
     env: process.env.NODE_ENV || 'local',
-  }
+  },
 });
 
 if (notProd) {
@@ -27,6 +28,11 @@ if (notProd) {
       basicAuth: {
        username: process.env.LOKI_USER,
        password: process.env.LOKI_PASS,
+      },
+      // only present for pino transport
+      labels: {
+        service_name: serviceName,
+        env,
       },
     },
   });
